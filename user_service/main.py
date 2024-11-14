@@ -2,7 +2,6 @@ from fastapi import FastAPI, Depends, HTTPException, Request, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
-from sqlalchemy.types import NULLTYPE
 from . import crud, models, shemas, database
 
 app = FastAPI()
@@ -33,6 +32,6 @@ def create_user(name: str = Form(...), email: str = Form(...), db: Session = Dep
 @app.get("/users/{user_id}")
 def read_user(user_id: int, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.id == user_id).first()
-    if user is None:
+    if user is None:  
         raise HTTPException(status_code=404, detail="User not found")
     return user
